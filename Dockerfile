@@ -19,13 +19,12 @@ ENV JIRA_USER=jira \
 ENV JAVA_OPTS="-javaagent:${AGENT_PATH}/${AGENT_FILENAME} ${JAVA_OPTS}"
 
 RUN mkdir -p ${JIRA_INSTALL} ${JIRA_HOME} ${AGENT_PATH} \
-&& curl -o ${AGENT_PATH}/${AGENT_FILENAME} https://github.com/raimangsxr/jira/blob/main/atlassian-agent.jar -L \
+&& curl -o ${AGENT_PATH}/${AGENT_FILENAME}  https://github.com/raimangsxr/jira/blob/main/atlassian-agent.jar -L \
 && curl -o /tmp/atlassian.tar.gz https://product-downloads.atlassian.com/software/jira/downloads/atlassian-${JIRA_PRODUCT}-${JIRA_VERSION}.tar.gz -L \
 && tar xzf /tmp/atlassian.tar.gz -C ${JIRA_INSTALL}/ --strip-components 1 \
 && rm -f /tmp/atlassian.tar.gz \
+&& curl -o  ${JIRA_INSTALL}/conf/server.xml  https://github.com/raimangsxr/jira/blob/main/server.xml -L \
 && echo "jira.home = ${JIRA_HOME}" > ${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties
-
-RUN chown -R $JIRA_USER:$JIRA_USER ${JIRA_HOME}
 
 RUN export CONTAINER_USER=$JIRA_USER \
 && export CONTAINER_GROUP=$JIRA_GROUP \
