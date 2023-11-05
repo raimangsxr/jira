@@ -10,6 +10,7 @@ ENV JIRA_USER=jira \
     JIRA_GROUP=jira \
     JIRA_HOME=/var/jira \
     JIRA_INSTALL=/opt/jira \
+    JIRA_FQDN=changeit \
     JVM_MINIMUM_MEMORY=1g \
     JVM_MAXIMUM_MEMORY=3g \
     JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=2g' \
@@ -23,7 +24,7 @@ RUN mkdir -p ${JIRA_INSTALL} ${JIRA_HOME} ${AGENT_PATH} \
 && curl -o /tmp/atlassian.tar.gz https://product-downloads.atlassian.com/software/jira/downloads/atlassian-${JIRA_PRODUCT}-${JIRA_VERSION}.tar.gz -L \
 && tar xzf /tmp/atlassian.tar.gz -C ${JIRA_INSTALL}/ --strip-components 1 \
 && rm -f /tmp/atlassian.tar.gz \
-&& curl -o  ${JIRA_INSTALL}/conf/server.xml  https://github.com/raimangsxr/jira/blob/main/server.xml -L \
+&& curl -o ${JIRA_INSTALL}/conf/server.xml  https://github.com/raimangsxr/jira/blob/main/server.xml -L \
 && echo "jira.home = ${JIRA_HOME}" > ${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties
 
 RUN export CONTAINER_USER=$JIRA_USER \
@@ -36,4 +37,5 @@ USER $JIRA_USER
 WORKDIR $JIRA_INSTALL
 EXPOSE 8080
 
+RUN ls -lisah /var/agent
 ENTRYPOINT ["/opt/jira/bin/start-jira.sh", "-fg"]
