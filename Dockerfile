@@ -10,7 +10,6 @@ ENV JIRA_USER=jira \
     JIRA_GROUP=jira \
     JIRA_HOME=/var/jira \
     JIRA_INSTALL=/opt/jira \
-    JIRA_FQDN=changeit \
     JVM_MINIMUM_MEMORY=1g \
     JVM_MAXIMUM_MEMORY=3g \
     JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=2g' \
@@ -24,7 +23,6 @@ RUN curl -k -o ${AGENT_PATH}/${AGENT_FILENAME} https://github.com/raimangsxr/jir
 RUN curl -k -o /tmp/atlassian.tar.gz https://product-downloads.atlassian.com/software/jira/downloads/atlassian-${JIRA_PRODUCT}-${JIRA_VERSION}.tar.gz -L
 RUN tar xzf /tmp/atlassian.tar.gz -C ${JIRA_INSTALL}/ --strip-components 1
 RUN rm -f /tmp/atlassian.tar.gz
-RUN curl -k -o ${JIRA_INSTALL}/conf/server.xml https://github.com/raimangsxr/jira/releases/download/1.0/server.xml -L
 RUN echo "jira.home = ${JIRA_HOME}" > ${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties
 
 RUN export CONTAINER_USER=$JIRA_USER
