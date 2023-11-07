@@ -6,8 +6,8 @@ ARG JIRA_VERSION=9.11.2
 # Production: jira-software jira-core
 ARG JIRA_PRODUCT=jira-software
 
-ENV JIRA_USER=jira \
-    JIRA_GROUP=jira \
+ENV JIRA_USER=apps \
+    JIRA_GROUP=apps \
     JIRA_HOME=/var/jira \
     JIRA_INSTALL=/opt/jira \
     JVM_MINIMUM_MEMORY=1g \
@@ -27,7 +27,7 @@ RUN echo "jira.home = ${JIRA_HOME}" > ${JIRA_INSTALL}/atlassian-jira/WEB-INF/cla
 
 RUN export CONTAINER_USER=$JIRA_USER
 RUN export CONTAINER_GROUP=$JIRA_GROUP
-RUN groupadd -r $JIRA_GROUP && useradd -r -g $JIRA_GROUP $JIRA_USER
+RUN groupadd -r -g 568 $JIRA_GROUP && useradd -r -g $JIRA_GROUP -u 568 $JIRA_USER
 RUN chown -R $JIRA_USER:$JIRA_GROUP ${JIRA_INSTALL} ${JIRA_HOME}/ ${AGENT_PATH}
 
 VOLUME $JIRA_HOME
